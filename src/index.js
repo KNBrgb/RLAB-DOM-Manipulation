@@ -36,9 +36,12 @@ var menuLinks = [
     ],
   },
 ];
-
+// Part 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const mainElement = document.querySelector("main");
 mainElement.style.backgroundColor = "var(--main-bg)";
+// !! similar to when the css selector "flex-around" which applies all the CSS properties to topMenuEl.
+// "var(--sub-menu-bg)" contains the css property value that's stored inside "var()--main-bg"
+// so it can be called up and applied apply to the mainElement !!
 // const h1El = document.createElement("h1");
 mainElement.innerHTML = "<h1>DOM Manipulation</h1>";
 mainElement.classList.add("flex-ctr");
@@ -52,7 +55,7 @@ menuLinks.forEach((link) => {
   anchorEl.textContent = link.text;
   topMenuEl.appendChild(anchorEl);
 });
-
+// Part 2 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Select and cache the <nav id="sub-menu">
 // element in a variable named subMenuEl.
 const subMenuEl = document.querySelector("#sub-menu");
@@ -87,18 +90,20 @@ topMenuEl.addEventListener("click", (event) => {
   }
   //Log the content of the <a> to verify the handler is working.
   console.log(event.target.textContent);
-  //The event listener should add the active class to the <a> element
-  //that was clicked, unless it was already active,
-  //in which case it should remove it.
+  // The event listener should add the active class to the <a> element
+  // that was clicked, unless it was already active,
+  // in which case it should remove it.
   // event.target.classList.add("active");
-  //The event listener should add the active class to the <a> element that was clicked, unless it was already active, in which case it should remove it.
+  // The event listener should add the active class to the <a> element that was clicked,
+  // unless it was already active, in which case it should remove it.
   if (event.target.classList.contains("active")) {
     // console.log("ACTIVE")
     event.target.classList.remove("active");
   } else {
     event.target.classList.add("active");
   }
-  //The event listener should remove the active class from each other <a> element in topMenuLinks - whether the active class exists or not.
+  // The event listener should remove the active class from each other <a> element in topMenuLinks -
+  // whether the active class exists or not.
   TopMenuLinks.forEach((item) => {
     // console.log(item);
     // item.classList.remove("active");
@@ -107,7 +112,7 @@ topMenuEl.addEventListener("click", (event) => {
     }
   });
   // If the clicked <a> element's "link" object within menuLinks has a subLinks property
-  //(all do, except for the "link" object for ABOUT), set the CSS top property of subMenuEl to 100%.
+  // (all do, except for the "link" object for ABOUT), set the CSS top property of subMenuEl to 100%.
   // console.log(event.target.textContent);
   // console.log(menuLinks.filter(item => item.text == event.target.textContent && item.subLinks));
   if (
@@ -121,28 +126,26 @@ topMenuEl.addEventListener("click", (event) => {
     subMenuEl.style.top = "0";
   }
   const buildSubmenu = (subLinks) => {
-    //Clear the current contents of subMenuEl.
+    // Clear the current contents of subMenuEl.
     subMenuEl.innerHTML = "";
-    //iterate over the subLinks array, passed as an argument, and for each "link" object:
+    // iterate over the subLinks array, passed as an argument, and for each "link" object:
     // menuLinks.forEach((item) => {
     // if (item.text == event.target.textContent) {
     // console.log(item.subLinks);
-    if(!subLinks)
-      return
+    if (!subLinks) return;
     subLinks.forEach((item) => {
       // console.log(item);
-    
-      //Create an <a> element.
+
+      // Create an <a> element.
       const aEl = document.createElement("a");
-      //Add an href attribute to the <a>, with the value set by the href property of the "link" object.
+      // Add an href attribute to the <a>, with the value set by the href property of the "link" object.
       aEl.setAttribute("href", item.href);
-      //Set the element's content to the value of the text property of the "link" object.
+      // Set the element's content to the value of the text property of the "link" object.
       aEl.textContent = item.text;
       // console.log(item.text);
-      //Append the new element to the subMenuEl.
+      // Append the new element to the subMenuEl.
       subMenuEl.appendChild(aEl);
       // console.log(aEl);
-
     });
     // }
     // });
@@ -150,54 +153,62 @@ topMenuEl.addEventListener("click", (event) => {
 
   menuLinks.forEach((item) => {
     if (item.text == event.target.textContent) {
-      buildSubmenu(item.subLinks)
+      buildSubmenu(item.subLinks);
     }
   });
+  // If the ABOUT link is clicked, an <h1>About</h1> should be displayed.
+  if (event.target.textContent === "about") {
+    mainElement.innerHTML = "<h1>About</h1>";
+  }
 });
-//Attach a delegated 'click' event listener to subMenuEl.
-subMenuEl.addEventListener("click", event =>{
-//The first line of code of the event listener function should call the event 
-event.preventDefault()
+// Attach a delegated 'click' event listener to subMenuEl.
+subMenuEl.addEventListener("click", (event) => {
+  // The first line of code of the event listener function should call the event
+  event.preventDefault();
   if (event.target.tagName.toLowerCase() !== "a") {
     return;
-  // } else {
-  //   console.log(event.target.textContent);
+    // } else {
+    // console.log(event.target.textContent);
   } else {
-   // Next, the event listener should set the CSS top property of subMenuEl to 0.
-  //  subMenuEl.style.top = "0"
-   //Remove the active class from each <a> element in topMenuLinks.
-  //  subMenuEl.classList.remove("active");
+    // Next, the event listener should set the CSS top property of subMenuEl to 0.
+    // subMenuEl.style.top = "0"
+    // Remove the active class from each <a> element in topMenuLinks.
+    //  subMenuEl.classList.remove("active");
   }
-  subMenuEl.style.top = "0"
+  subMenuEl.style.top = "0";
   // console.log(event.target);
-  //Update the contents of mainEl, within an <h1>, 
+  // Update the contents of mainEl, within an <h1>,
   // to the contents of the <a> element clicked within subMenuEl.
- mainElement.querySelector("h1").textContent = event.target.textContent;
- mainElement.querySelector("h1").style.textTransform = "capitalize";
+  mainElement.querySelector("h1").textContent = event.target.textContent;
+  mainElement.querySelector("h1").style.textTransform = "capitalize";
+  // If the ABOUT link is clicked, an <h1>About</h1> should be displayed.
+  // if (event.target.textContent === "about") {
+  //   mainEl.textContent = "About";
+  // }
+  // event.target.textContent[0].toUpperCase() + event.target.textContent.slice(1)
+  // changes the first letter ^
 
- //event.target.textContent[0].toUpperCase() + event.target.textContent.slice(1)
-//changes the first letter ^
-
-  //Remove the active class from each <a> element in topMenuLinks.
-  //  subMenuEl.classList.remove("active");
+  // Remove the active class from each <a> element in topMenuLinks.
+  // subMenuEl.classList.remove("active");
   TopMenuLinks.forEach((item) => {
     // console.log(item);
     if (item != event.target) {
       item.classList.remove("active");
     }
   });
+  menuLinks.forEach((item) => {
+    if (item.subLinks) {
+      document.querySelector("h1").textContent = event.target.textContent;
+    }
+  });
 });
 
-menuLinks.forEach((item) =>{
-  if(item.subLinks){
-    document.querySelector("h1") = event.target.textContent
-  }
-});
+// menuLinks.forEach((item) =>{
+//   if(item.subLinks){
+//     document.querySelector("h1").textContent = event.target.textContent
+//   }
+// });
 // console.log(subMenuEl);
-
-
-
-
 
 // console.log("Lifting weights repetition 1");
 // console.log("Lifting weights repetition 2");
